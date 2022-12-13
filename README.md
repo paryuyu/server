@@ -6,4 +6,11 @@
 - 약식으로 진행
 
 > 기술 및 툴
+
 `JavaScript` `Mongoose` `Express`
+
+> 특징
+
+- socket.io 이용
+- Mongoose 이용
+- bcrypt 이용
