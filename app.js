@@ -9,6 +9,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+const uri = process.env.MONGODB_URI;
+mongoose.connect(uri,{dbName:"discord"});
 //express 설정
 const app = express();
 
