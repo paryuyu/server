@@ -34,14 +34,11 @@ router.post('/login', async (req, res) => {
         } else if (findId && comparePW) {
             let one = { name: findId.name, email: findId.email };
             //토큰 생성 -> email, name 던져주기
-            let token = jwt.sign(one, 'secret', { expiresIn: '7d' })
-            return res.status(200).json({ result:true, token: token, msg: '로그인에 성공하셨습니다.' })
+
+
+            let token = jwt.sign(one, process.env.SECRET_KEY, { expiresIn: '7d' })
+            return res.status(200).json({ result: true, token: token, msg: '로그인에 성공하셨습니다.' })
         }
-
-
-
-
-
 
     } catch (err) {
         return res.status(404).json({ msg: '' })
@@ -80,6 +77,14 @@ router.post('/register', async (req, res) => {
         console.log(err)
         return res.status(401).json({ result: false })
     }
+})
+
+
+
+//토큰 유효성 검사 하나 만들기(서버)
+router.post("/session", async (req, res) => {
+
+    
 })
 
 

@@ -3,6 +3,7 @@
 
 //몽구스 설정
 const authRoutes = require('./router/auth.js');
+const relationshipRoutes = require('./router/relationship.js')
 const mongoose = require("mongoose");
 const path = require("path");
 const express = require("express");
@@ -27,5 +28,5 @@ app.use(express.json())
 app.use("/static",express.static(path.join(__dirname,'static')))
 
 app.use('/auth',authRoutes)
-
+app.use('/relationship',relationshipRoutes)
 app.listen(8080, ()=>{console.log('serverStart');})
