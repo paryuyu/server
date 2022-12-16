@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
     userId:{type:String, unique:true, trim:true},
     password:String,
     authed:Boolean,
-    createdAt:Date
+    createdAt:Date,
+    socketId:String
 })
 
 module.exports = mongoose.model("user", UserSchema)

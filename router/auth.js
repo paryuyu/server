@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
         let userPassword = req.body.userPassword;
         //아이디 찾아서
         const findId = await UserSchema.findOne({ userId: userId }).lean();
-
+        console.log(findId,'findId')
         if (!findId) {
             return res.status(500).json({ msg: '아이디를 확인해주세요.' })
         }
@@ -32,11 +32,11 @@ router.post('/login', async (req, res) => {
 
             //id도 있고 그게 비번도 맞으면
         } else if (findId && comparePW) {
-            let one = { name: findId.name, email: findId.email };
+            let one = { name: findId.userName, email: findId.userId };
             //토큰 생성 -> email, name 던져주기
+            console.log(one)
 
-
-            let token = jwt.sign(one, process.env.SECRET_KEY, { expiresIn: '7d' })
+            let token = jwt.sign({ user: one }, process.env.SECRET_KEY, { expiresIn: '7d' })
             return res.status(200).json({ result: true, token: token, msg: '로그인에 성공하셨습니다.' })
         }
 
@@ -81,10 +81,30 @@ router.post('/register', async (req, res) => {
 
 
 
-//토큰 유효성 검사 하나 만들기(서버)
+//TODO: 토큰 유효성 검사 하나 만들기(서버)
 router.post("/session", async (req, res) => {
+    const authorization = req.get("authorization");
+    if (!authorization) {
+        return res.status(401).json({ msg: '인증 값이 존재하지 않습니다.' });
+    }
 
-    
+    if (authorization.startsWith("Bearer")) {
+        console.log(authorization)
+        const token = authorization.split(/\s/)[1];
+        try {
+            const payload = jwt.verify(token, process.env.SECRET_KEY)
+            console.log(payload, ":payload")
+            return res.status(200).json(payload);
+        } catch (e) {
+            return res.status(401).json({ msg: '토큰값이 유효하지 않습니다.' });
+        }
+
+
+    } else {
+        return res.status(401).json({ message: "지원되지 않는 밸류입니다." });
+    }
+
+
 })
 
 
